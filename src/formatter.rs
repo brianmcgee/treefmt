@@ -89,16 +89,28 @@ pub struct Formatter {
 impl Formatter {
     /// Run the formatter on the given paths
     // TODO: handle E2BIG
-    pub fn fmt(&self, paths: &[PathBuf]) -> Result<Output> {
-        let mut cmd_arg = Command::new(&self.command);
-        // Set the command to run under its working directory.
-        cmd_arg.current_dir(&self.work_dir);
-        // Append the default options to the command.
-        cmd_arg.args(&self.options);
-        // Append all of the file paths to format.
-        cmd_arg.args(paths);
-        // And run
-        Ok(cmd_arg.output()?)
+    pub fn fmt(&self, paths: &[PathBuf]) -> Vec<Box<dyn Fn(()) -> anyhow::Result<()>>> {
+        // FIXME: make chunks configurable
+        paths.chunks(1020).map(|paths|
+            Box::new(move || -> anyhow::Result<()> {
+                let mut cmd_arg = Command::new(&self.command);
+                // Set the command to run under its working directory.
+                cmd_arg.current_dir(&self.work_dir);
+                // Append the default options to the command.
+                cmd_arg.args(&self.options);
+                // Append all of the file paths to format.
+                cmd_arg.args(paths);
+                // And run
+                let output = cmd_arg.output()?;
+                if output.status > 0 {
+                    anyhow!("exited with {}", output.status);
+                }
+
+                // TODO: print stdout and stderr
+
+                Ok(())
+            })
+        ).collect()
     }
 
     /// Returns the formatter if the path matches the formatter rules.
