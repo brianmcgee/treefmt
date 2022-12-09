@@ -8,6 +8,7 @@ pub fn format_cmd(
     tree_root: &Option<PathBuf>,
     work_dir: &Path,
     config_file: &Path,
+    project_root_file: &Option<PathBuf>,
     paths: &[PathBuf],
     no_cache: bool,
     clear_cache: bool,

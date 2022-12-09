@@ -65,6 +65,11 @@ pub struct Cli {
     /// Run with the specified config file, which is not required to be in the tree to be formatted.
     pub config_file: Option<PathBuf>,
 
+    #[structopt(long = "project-root-file")]
+    /// A file to look for, starting from the cwd and traversing up the tree hierarchy, which is used
+    /// to identity the root directory of the project
+    pub project_root_file: Option<PathBuf>,
+
     #[structopt()]
     /// Paths to format. Defaults to formatting the whole tree.
     pub paths: Vec<PathBuf>,
@@ -84,27 +89,24 @@ pub fn cli_from_args() -> anyhow::Result<Cli> {
     cli.work_dir = expand_path(&cli.work_dir, &cwd);
 
     // Make sure the tree_root is an absolute path.
-    if let Some(tree_root) = cli.tree_root {
-        cli.tree_root = Some(expand_path(&tree_root, &cwd));
-    }
+    cli.tree_root = cli.tree_root.map(|tr| expand_path(&tr, &cwd));
 
-    match cli.config_file {
-        None => {
-            // Find the config file if not specified by the user.
-            cli.config_file = config::lookup(&cli.work_dir);
-        }
-        Some(_) => {
-            if cli.tree_root.is_none() {
-                return Err(anyhow!(
-                    "If --config-file is set, --tree-root must also be set"
-                ));
-            }
-        }
-    }
+    // Make sure project_config_file is an absolute path
+    cli.project_root_file = cli.project_root_file.map(|prf| expand_path(&prf, &cwd));
 
-    // Make sure the config_file points to an absolute path.
-    if let Some(config_file) = cli.config_file {
-        cli.config_file = Some(expand_path(&config_file, &cwd));
+    cli.config_file = cli
+        .config_file
+        .as_ref()
+        // Find the config file if not specified by the user.
+        .or_else(|| config::lookup(&cli.work_dir))
+        // ensure it points to an absolute path
+        .map(|cf| expand_path(&cf, &cwd));
+
+    // Check that one of tree_root or project_root_file are set if config_file is provided
+    if let (Some(_), None, None) = (cli.config_file, cli.tree_root, cli.project_root_file) {
+        return Err(anyhow!(
+            "If --config-file is set, one of --tree-root or --project-root-file must also be set"
+        ));
     }
 
     Ok(cli)
@@ -133,6 +135,7 @@ pub fn run_cli(cli: &Cli) -> anyhow::Result<()> {
             cli.config_file
                 .as_ref()
                 .expect("presence asserted in ::cli_from_args"),
+            &cli.project_root_file,
             &cli.paths,
             cli.no_cache,
             cli.clear_cache,
