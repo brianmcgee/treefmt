@@ -11,30 +11,31 @@ use self::init::init_cmd;
 use crate::config;
 use crate::expand_path;
 use anyhow::anyhow;
+use clap::Parser;
 use std::path::PathBuf;
-use structopt::StructOpt;
 
 /// ✨  format all your language!
-#[derive(Debug, StructOpt)]
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
 pub struct Cli {
     /// Create a new treefmt.toml
-    #[structopt(long = "init")]
+    #[arg(long = "init")]
     pub init: bool,
 
     /// Format the content passed in stdin
-    #[structopt(long = "stdin", conflicts_with("init"))]
+    #[arg(long = "stdin", conflicts_with("init"))]
     pub stdin: bool,
 
     /// Ignore the evaluation cache entirely. Useful for CI.
-    #[structopt(long = "no-cache", conflicts_with("stdin"), conflicts_with("init"))]
+    #[arg(long = "no-cache", conflicts_with("stdin"), conflicts_with("init"))]
     pub no_cache: bool,
 
     /// Reset the evaluation cache. Use in case the cache is not precise enough.
-    #[structopt(long = "clear-cache", conflicts_with("stdin"), conflicts_with("init"))]
+    #[arg(long = "clear-cache", conflicts_with("stdin"), conflicts_with("init"))]
     pub clear_cache: bool,
 
     /// Exit with error if any changes were made. Useful for CI.
-    #[structopt(
+    #[arg(
         long = "fail-on-change",
         conflicts_with("stdin"),
         conflicts_with("init")
@@ -42,41 +43,41 @@ pub struct Cli {
     pub fail_on_change: bool,
 
     /// Do not exit with error if a configured formatter is missing
-    #[structopt(long = "allow-missing-formatter")]
+    #[arg(long = "allow-missing-formatter")]
     pub allow_missing_formatter: bool,
 
     /// Log verbosity is based off the number of v used
-    #[structopt(long = "verbose", short = "v", parse(from_occurrences))]
+    #[arg(long = "verbose", short = 'v', action = clap::ArgAction::Count)]
     pub verbosity: u8,
 
-    #[structopt(long = "quiet", short = "q")]
+    #[arg(long = "quiet", short = 'q')]
     /// No output printed to stderr
     pub quiet: bool,
 
-    #[structopt(short = "C", default_value = ".")]
+    #[arg(short = 'C', default_value = ".")]
     /// Run as if treefmt was started in <work-dir> instead of the current working directory.
     pub work_dir: PathBuf,
 
-    #[structopt(long = "tree-root", env = "PRJ_ROOT")]
+    #[arg(long = "tree-root", env = "PRJ_ROOT")]
     /// Set the path to the tree root directory. Defaults to the folder holding the treefmt.toml file.
     pub tree_root: Option<PathBuf>,
 
-    #[structopt(long = "config-file")]
+    #[arg(long = "config-file")]
     /// Run with the specified config file, which is not required to be in the tree to be formatted.
     pub config_file: Option<PathBuf>,
 
-    #[structopt()]
+    #[arg()]
     /// Paths to format. Defaults to formatting the whole tree.
     pub paths: Vec<PathBuf>,
 
-    #[structopt(long = "formatters", short = "f")]
+    #[arg(long = "formatters", short = 'f')]
     /// Select formatters name to apply. Defaults to all formatters.
     pub formatters: Option<Vec<String>>,
 }
 
 /// Use this instead of Cli::from_args(). We do a little bit of post-processing here.
 pub fn cli_from_args() -> anyhow::Result<Cli> {
-    let mut cli = Cli::from_args();
+    let mut cli = Cli::parse();
     let cwd = std::env::current_dir()?;
     assert!(cwd.is_absolute());
     // Make sure the work_dir is an absolute path. Don't use the stdlib canonicalize() function
