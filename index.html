@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>About the project - treefmt — one CLI to format your repo</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> About the project</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="treefmt-configuration.html"><strong aria-hidden="true">2.2.</strong> Configuration</a></li></ol></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="index-formatters.html"><strong aria-hidden="true">4.</strong> Formatters</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="formatters-spec.html"><strong aria-hidden="true">4.1.</strong> Formatters Specification</a></li><li class="chapter-item expanded "><a href="formatters.html"><strong aria-hidden="true">4.2.</strong> Known Formatters</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">treefmt — one CLI to format your repo</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="about-the-project"><a class="header" href="#about-the-project">About the project</a></h1>
+<p><code>Treefmt</code> is a formatting tool that saves you time: it provides developers with a universal way to trigger all formatters needed for the project in one place.</p>
+<h2 id="background"><a class="header" href="#background">Background</a></h2>
+<p>Typically, each project has its own code standards enforced by the project's owner. Any code contributions must match that given standard, i.e. be formatted in a specific manner.</p>
+<p>At first glance, the task of code formatting may seem trivial: the formatter can be automatically triggered when you save a file in your IDE. Indeed, formatting doesn't take much effort if you're working on a single project long term: setting up the formatters in your IDE won't take much of your time, and then you're ready to go.</p>
+<p>Contrary to that, if you're working on multiple projects at the same time, you may have to update your formatter configs in the IDE each time you switch between the projects. This is because formatter settings aren't project-specific --- they are set up globally for all projects.</p>
+<p>Alternatively, you can trigger formatters manually, one-by-one or in a script. Actually, for bigger projects, it's common to have a script that runs over your project's directories and calls formatters consequently. But it takes time to iterate through all the files.</p>
+<p>All the solutions take up a significant amount of time which a developer could spend doing the actual work. They also require you to remember which formatters and options are used by each project you are working on.</p>
+<p><code>Treefmt</code> solves these issues.</p>
+<h2 id="why-treefmt"><a class="header" href="#why-treefmt">Why treefmt?</a></h2>
+<p><code>Treefmt</code>'s configuration is project-specific, so you don't need to re-configure formatters each time you switch between projects, like you have to when working with formatters in the IDE.</p>
+<p>Contrary to calling formatters from the command line, there's no need to remember all the specific formatters required for each project. Once you set up the config, you can run the tool in any of your project's folders without any additional flags or options.</p>
+<p>Typically, formatters have different ways to say there was a specific error. With <code>treefmt</code>, you get a standardized output which is easier to understand than the variegated outputs of different formatters, so it takes less time to grasp what's wrong.</p>
+<p>In addition, <code>treefmt</code> works faster than the custom script solution because the changed files are cached and the formatters run only against them. Moreover, formatters are run in parallel, which makes the tool even faster.</p>
+<p>The difference may not be significant for smaller projects, but it gets quite visible as the project grows. For instance, take the caching optimization. It takes 9 seconds to traverse a project of 1507 files and no changes without caching:</p>
+<pre><code>traversed 1507 files
+matched 828 files to formatters
+left with 828 files after cache
+of whom 0 files were re-formatted
+all of this in 9s
+</code></pre>
+<p>...while it takes 124 milliseconds to traverse the same project with caching:</p>
+<pre><code>traversed 1507 files
+matched 828 files to formatters
+left with 0 files after cache
+of whom 0 files were re-formatted
+all of this in 124ms
+</code></pre>
+<p>The tool can be invoked manually or integrated into your CI. There's currently no integration with IDEs, but the feature is coming soon.</p>
+<h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
+<p><code>Treefmt</code> traverses all your project's folders, maps files to specific code formatters, and formats the code accordingly.</p>
+<p>Other tools also also traverse the filesystem, but not necessarily starting from the root of the project.</p>
+<p>Contrary to other formatters, <code>treefmt</code> doesn't preview the changes before writing them to a file. If you want to view the changes, you can always check the diff in your version control (we assume that your project is checked into a version control system). You can also rely on version control if errors were introduced into your code as a result of disruptions in the formatter's work.</p>
+<p>If <code>treefmt</code> was interrupted and not all the changed files ended up being formatted, we recommend to clear the cache with the --clear-cache flag.</p>
+<h2 id="upcoming-features"><a class="header" href="#upcoming-features">Upcoming features</a></h2>
+<ul>
+<li><strong>IDE integration:</strong> Most of developers are used to formatting a file upon save in the IDE. So far, you can't use <code>treefmt</code> for this purpose, but we're working on it 😀</li>
+<li><strong>Pre-commit hook:</strong> It's good to have your code checked for adherence to the project's standards before commit. <code>Treefmt</code> pre-commit hook won't let you commit if you have formatting issues.</li>
+<li><strong>Support of multiple formatters for one language:</strong> In the current version, we advise you to avoid using multiple formatters for one and the same file type. This is because formatters are run in parallel and therefore may encounter issues while processing files. We are going to fix this issue soon, since there are cases when you may need more than one formatter per language.</li>
+</ul>
+<p>As a next step, learn how to <a href="installation.html">install</a> and <a href="usage.html">use</a> <code>treefmt</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next" href="quickstart.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next" href="quickstart.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

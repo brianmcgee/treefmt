@@ -1,0 +1,644 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>treefmt — one CLI to format your repo</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> About the project</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="treefmt-configuration.html"><strong aria-hidden="true">2.2.</strong> Configuration</a></li></ol></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="index-formatters.html"><strong aria-hidden="true">4.</strong> Formatters</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="formatters-spec.html"><strong aria-hidden="true">4.1.</strong> Formatters Specification</a></li><li class="chapter-item expanded "><a href="formatters.html"><strong aria-hidden="true">4.2.</strong> Known Formatters</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">treefmt — one CLI to format your repo</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="about-the-project"><a class="header" href="#about-the-project">About the project</a></h1>
+<p><code>Treefmt</code> is a formatting tool that saves you time: it provides developers with a universal way to trigger all formatters needed for the project in one place.</p>
+<h2 id="background"><a class="header" href="#background">Background</a></h2>
+<p>Typically, each project has its own code standards enforced by the project's owner. Any code contributions must match that given standard, i.e. be formatted in a specific manner.</p>
+<p>At first glance, the task of code formatting may seem trivial: the formatter can be automatically triggered when you save a file in your IDE. Indeed, formatting doesn't take much effort if you're working on a single project long term: setting up the formatters in your IDE won't take much of your time, and then you're ready to go.</p>
+<p>Contrary to that, if you're working on multiple projects at the same time, you may have to update your formatter configs in the IDE each time you switch between the projects. This is because formatter settings aren't project-specific --- they are set up globally for all projects.</p>
+<p>Alternatively, you can trigger formatters manually, one-by-one or in a script. Actually, for bigger projects, it's common to have a script that runs over your project's directories and calls formatters consequently. But it takes time to iterate through all the files.</p>
+<p>All the solutions take up a significant amount of time which a developer could spend doing the actual work. They also require you to remember which formatters and options are used by each project you are working on.</p>
+<p><code>Treefmt</code> solves these issues.</p>
+<h2 id="why-treefmt"><a class="header" href="#why-treefmt">Why treefmt?</a></h2>
+<p><code>Treefmt</code>'s configuration is project-specific, so you don't need to re-configure formatters each time you switch between projects, like you have to when working with formatters in the IDE.</p>
+<p>Contrary to calling formatters from the command line, there's no need to remember all the specific formatters required for each project. Once you set up the config, you can run the tool in any of your project's folders without any additional flags or options.</p>
+<p>Typically, formatters have different ways to say there was a specific error. With <code>treefmt</code>, you get a standardized output which is easier to understand than the variegated outputs of different formatters, so it takes less time to grasp what's wrong.</p>
+<p>In addition, <code>treefmt</code> works faster than the custom script solution because the changed files are cached and the formatters run only against them. Moreover, formatters are run in parallel, which makes the tool even faster.</p>
+<p>The difference may not be significant for smaller projects, but it gets quite visible as the project grows. For instance, take the caching optimization. It takes 9 seconds to traverse a project of 1507 files and no changes without caching:</p>
+<pre><code>traversed 1507 files
+matched 828 files to formatters
+left with 828 files after cache
+of whom 0 files were re-formatted
+all of this in 9s
+</code></pre>
+<p>...while it takes 124 milliseconds to traverse the same project with caching:</p>
+<pre><code>traversed 1507 files
+matched 828 files to formatters
+left with 0 files after cache
+of whom 0 files were re-formatted
+all of this in 124ms
+</code></pre>
+<p>The tool can be invoked manually or integrated into your CI. There's currently no integration with IDEs, but the feature is coming soon.</p>
+<h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
+<p><code>Treefmt</code> traverses all your project's folders, maps files to specific code formatters, and formats the code accordingly.</p>
+<p>Other tools also also traverse the filesystem, but not necessarily starting from the root of the project.</p>
+<p>Contrary to other formatters, <code>treefmt</code> doesn't preview the changes before writing them to a file. If you want to view the changes, you can always check the diff in your version control (we assume that your project is checked into a version control system). You can also rely on version control if errors were introduced into your code as a result of disruptions in the formatter's work.</p>
+<p>If <code>treefmt</code> was interrupted and not all the changed files ended up being formatted, we recommend to clear the cache with the --clear-cache flag.</p>
+<h2 id="upcoming-features"><a class="header" href="#upcoming-features">Upcoming features</a></h2>
+<ul>
+<li><strong>IDE integration:</strong> Most of developers are used to formatting a file upon save in the IDE. So far, you can't use <code>treefmt</code> for this purpose, but we're working on it 😀</li>
+<li><strong>Pre-commit hook:</strong> It's good to have your code checked for adherence to the project's standards before commit. <code>Treefmt</code> pre-commit hook won't let you commit if you have formatting issues.</li>
+<li><strong>Support of multiple formatters for one language:</strong> In the current version, we advise you to avoid using multiple formatters for one and the same file type. This is because formatters are run in parallel and therefore may encounter issues while processing files. We are going to fix this issue soon, since there are cases when you may need more than one formatter per language.</li>
+</ul>
+<p>As a next step, learn how to <a href="installation.html">install</a> and <a href="usage.html">use</a> <code>treefmt</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h1>
+<p>To run <code>treefmt</code> in your project, please follow these steps:</p>
+<ol>
+<li><a href="installation.html">Install</a> the tool.</li>
+<li>Install the needed formatters.</li>
+<li>Run <code>treefmt --init</code>. This will generate the basic configuration file <code>treefmt.toml</code> containing the formatting rules.</li>
+<li>Edit the configuration (see <a href="formatters-spec.html">here</a> how).</li>
+<li>Run <code>treefmt</code> with the needed flags and options. You can check the supported options by executing <code>treefmt --help</code>.</li>
+</ol>
+<p>In the following sections we will guide you through installing and configuring <code>treefmt</code> in detail.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>There are two options to install <code>treefmt</code>: by downloading the latest binary, or by compiling and building the tool from source.</p>
+<h2 id="installing-with-a-binary-file"><a class="header" href="#installing-with-a-binary-file">Installing with a binary file</a></h2>
+<p>You can find the list of the latest binaries <a href="https://github.com/numtide/treefmt/releases">here</a>.</p>
+<h2 id="building-from-source"><a class="header" href="#building-from-source">Building from source</a></h2>
+<p>There are several ways to build <code>treefmt</code> from source. Your choice will depend on whether you're a <a href="https://github.com/NixOS/nix">nix</a> user.</p>
+<h3 id="non-nix-user"><a class="header" href="#non-nix-user">Non-Nix User</a></h3>
+<p>To try the project without building it, run:</p>
+<pre><code>$ cargo run -- --help
+</code></pre>
+<p>The command will output the manual. You can run the tool in this manner with any other flag or option to format your project.</p>
+<p>To build a binary, you need to have rust installed. You can install it with <a href="https://rustup.rs/">rustup</a>. Now, if you want to build the project, switch to the project root folder and run:</p>
+<pre><code>$ cargo build
+</code></pre>
+<p>After the successful execution of the cargo build command, you will find the <code>treefmt</code> binary in the target folder.</p>
+<h3 id="nix-user"><a class="header" href="#nix-user">Nix User</a></h3>
+<p><a href="https://github.com/NixOS/nix">Nix</a> is a package manager foundational for NixOS. You can use it in NixOS and in any other OS equally.</p>
+<p><strong>Non-flake user</strong></p>
+<p>Here you also have two options: you can install <code>treefmt</code> with plain nix-build , or with nix-shell.</p>
+<p>To build the package with nix-build, just run:</p>
+<pre><code>$ nix-build -A treefmt
+</code></pre>
+<p><strong>Nix-flake user</strong></p>
+<p>If you want to use this repository with flakes, please enable the flakes feature first. To run the project with flakes without building it, you can execute the following command in the root folder:</p>
+<pre><code>$ nix run . -- --help
+</code></pre>
+<p>To build the project, run the following command in the root folder:</p>
+<pre><code>$ nix build
+</code></pre>
+<p>The <code>treefmt</code> binary will be available in the result folder.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<p><code>treefmt</code> can only be run in the presence of <code>treefmt.toml</code> where files are mapped to specific code formatters.</p>
+<p>Usually the config file sits in the project root folder. If you're running <code>treefmt</code> in one of the project's folders, then <code>treefmt</code> will look for the config in the parent folders up until the project's root. However, you can place the config anywhere in your project's file tree and specify the path in the the ---config-file flag.</p>
+<p>The typical section of <code>treefmt.toml</code> looks like this:</p>
+<pre><code>[formatter.&lt;name&gt;]
+command = &quot;&lt;formatter-command&gt;&quot;
+options = [&quot;&lt;formatter-option-1&gt;&quot;...]
+includes = [&quot;&lt;regular-expression&gt;&quot;]
+</code></pre>
+<p>...where name is just an identifier.</p>
+<pre><code>[formatter.elm]
+command = &quot;elm-format&quot;
+options = [&quot;--yes&quot;]
+includes = [&quot;*.elm&quot;]
+</code></pre>
+<p>Make sure you installed all the formatters specified in the config before running <code>treefmt</code>. If you don't want to install all formatters, you can still run <code>treefmt</code> by specifying the flag <code>--allow-missing-formatter</code>. This will make the program not error out if the needed formatter is missing.</p>
+<h2 id="configuration-format"><a class="header" href="#configuration-format">Configuration format</a></h2>
+<h3 id="formattername"><a class="header" href="#formattername"><code>[formatter.&lt;name&gt;]</code></a></h3>
+<p>This section describes the integration between a single formatter and treefmt. &quot;Name&quot; here is a unique ID of your formatter in the config file. It doesn't have to match the formatter name.</p>
+<ul>
+<li>
+<p><code>command</code>: A list of arguments to be executed. This will be concatenated with the options attribute during invocation. The first argument is the name of the executable to run.</p>
+</li>
+<li>
+<p><code>options</code>: A list of extra arguments to add to the command. These are typically project-specific arguments.</p>
+</li>
+<li>
+<p><code>includes</code>: A list of glob patterns to match file names, including extensions and paths, used to select specific files for formatting. Typically, only file extensions are specified to pick all files written in a specific language. For instance,[<code>&quot;*.sh&quot;</code>] selects shell script files. But sometimes, you may need to specify a full file name, like [<code>&quot;Makefile&quot;</code>], or a pattern picking files in a specific folder, like [<code>&quot;/home/user/project/*&quot;</code>].</p>
+</li>
+<li>
+<p><code>excludes</code>: A list of glob patterns to exclude from formatting. If any of these patterns match, the file will be excluded from formatting by a particular formatter.</p>
+</li>
+</ul>
+<h3 id="global"><a class="header" href="#global"><code>[global]</code></a></h3>
+<p>This section describes the configuration properties that apply to every formatter.</p>
+<ul>
+<li><code>excludes</code>: A list of glob patterns to deny. If any of these patterns match, the file won't be formatted. This list is appended to the individual formatter's excludes lists.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
+<p>You can run treefmt by executing:</p>
+<p><code>$ treefmt</code></p>
+<p>or, if it's not in your <code>$PATH</code>:</p>
+<p><code>$ ./treefmt</code></p>
+<p>Treefmt has the following specification:</p>
+<pre><code>treefmt [FLAGS] [OPTIONS] [--] [paths]...
+</code></pre>
+<h2 id="flags"><a class="header" href="#flags">Flags</a></h2>
+<p><code>--allow-missing-formatter</code></p>
+<blockquote>
+<p>Do not exit with an error if some of the configured formatters are missing.</p>
+</blockquote>
+<p><code>--clear-cache</code></p>
+<blockquote>
+<p>Reset the evaluation cache. Invalidation should happen automatically if the formatting tool has been updated, or if the files to format have changed. If cache wasn't properly invalidated, you can use this flag to clear the cache.</p>
+</blockquote>
+<p><code>--fail-on-change</code></p>
+<blockquote>
+<p>Exit with error if some files require re-formatting. This is useful for your CI if you want to detect if the contributed code was forgotten to be formatted.</p>
+</blockquote>
+<p><code>-h, --help</code></p>
+<blockquote>
+<p>Prints available flags and options</p>
+</blockquote>
+<p><code>--init</code></p>
+<blockquote>
+<p>Creates a new config file <code>treefmt.toml</code>.</p>
+</blockquote>
+<p><code>--no-cache</code></p>
+<blockquote>
+<p>Tells <code>treefmt</code> to ignore the evaluation cache entirely. With this flag, you can avoid cache invalidation issues, if any. Typically, the machine that is running treefmt in the CI is starting with a fresh environment each time, so any calculated cache is lost. The <code>--no-cache</code> flag eliminates unnecessary work in the CI.</p>
+</blockquote>
+<p><code>-q, --quiet</code></p>
+<blockquote>
+<p>Don't print output to stderr.</p>
+</blockquote>
+<p><code>--stdin</code></p>
+<blockquote>
+<p>Format the content passed in stdin.</p>
+</blockquote>
+<p><code>-V, --version</code></p>
+<blockquote>
+<p>Print version information.</p>
+</blockquote>
+<p><code>-v, --verbose</code></p>
+<blockquote>
+<p>Change the log verbosity. Log verbosity is based off the number of 'v' used. With one <code>-v</code>, your logs will display <code>[INFO]</code> and <code>[ERROR]</code> messages, while <code>-vv</code> will also show <code>[DEBUG]</code> messages.</p>
+</blockquote>
+<p><code>--config-file &lt;config-file&gt;</code></p>
+<blockquote>
+<p>Run with the specified config file which is not in the project tree.</p>
+</blockquote>
+<p><code>-f, --formatters &lt;formatters&gt;...</code></p>
+<blockquote>
+<p>Only apply selected formatters. Defaults to all formatters.</p>
+</blockquote>
+<p><code>--tree-root &lt;tree-root&gt;</code></p>
+<blockquote>
+<p>Set the path to the tree root directory where treefmt will look for the files to format. Defaults to the folder holding the <code>treefmt.toml</code> file. It’s mostly useful in combination with —config-file to specify the project root which won’t coincide with the directory holding <code>treefmt.toml</code>.</p>
+</blockquote>
+<p><code>-C &lt;work-dir&gt;</code></p>
+<blockquote>
+<p>Run as if <code>treefmt</code> was started in <work-dir> instead of the current working directory (default: .). Equivalent to cd <code>&lt;work dir&gt;; treefmt</code>.</p>
+</blockquote>
+<h2 id="arguments"><a class="header" href="#arguments">Arguments</a></h2>
+<p><code>&lt;paths&gt;...</code></p>
+<blockquote>
+<p>Paths to format. Defaults to formatting the whole tree</p>
+</blockquote>
+<h2 id="ci-integration"><a class="header" href="#ci-integration">CI integration</a></h2>
+<p>Typically, you would use treefmt in the CI with the <code>--fail-on-change</code> and <code>--no-cache flags</code>. Find the explanations above.</p>
+<p>You can you set a <code>treefmt</code> job in the GitHub pipeline for Ubuntu with nix-shell like this:</p>
+<pre><code>name: treefmt
+on:
+  pull_request:
+  push:
+    branches: master
+jobs:
+  formatter:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: cachix/install-nix-action@v12
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v10
+      with:
+        name: nix-community
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+    - name: treefmt
+      run: nix-shell --run &quot;treefmt --fail-on-change --no-cache&quot;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="formatters"><a class="header" href="#formatters">Formatters</a></h1>
+<p>In order to catch up with all the formatters available for different programming languages, we created two files as our guideline:</p>
+<ol>
+<li><a href="./formatters-spec.html">Formatter Specifications</a> — Guidelines for formatter creators to have a smooth integration with <code>treefmt</code></li>
+<li><a href="./formatters.html">Formatter Example</a> — List of the available formatters with the corresponding configs that can be inserted into <code>treefmt.toml</code></li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="formatter-specification"><a class="header" href="#formatter-specification">Formatter specification</a></h1>
+<p>In order to keep the design of <code>treefmt</code> simple, we support only formatters which adhere to a certain standard. This document outlines this standard. If the formatter you would like to use doesn't comply with the rules, it's often possible to create a wrapper script that transforms the usage to match the specification.</p>
+<h2 id="command-line-interface"><a class="header" href="#command-line-interface">Command-line interface</a></h2>
+<p>In order to be integrated to <code>treefmt</code>'s workflow, the formatter's CLI must adhere to the following specification:</p>
+<pre><code>&lt;command&gt; [options] [...&lt;files&gt;]
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>&lt;command&gt;</code> is the name of the formatting tool.</li>
+<li><code>[options]</code> is any number of flags and options that the formatter accepts.</li>
+<li><code>[...&lt;files&gt;]</code> is one or more files given to the formatter for processing.</li>
+</ul>
+<p>Example:</p>
+<pre><code>$ rustfmt --edition 2018 src/main.rs src/lib.rs
+</code></pre>
+<p>Whenever a formatter is invoked with a list of files, it should processes only the specified files. Files that are not passed should never be formatted.</p>
+<p>If, and only if, a file has changed, the formatter will write the new content in place of the original one.</p>
+<h2 id="other-requirements"><a class="header" href="#other-requirements">Other requirements</a></h2>
+<p>You must ensure that the formatter you're planning to use:</p>
+<ul>
+<li><strong>Preserves code validity:</strong> This is a strong contract; the syntax and semantics must never be broken by the formatter.</li>
+<li><strong>Is idempotent:</strong> if it is run twice on a file, the file should not change on the second invocation.</li>
+</ul>
+<p><code>treefmt</code> guarantees that the formatter won't traverse the file system if a list of files is passed to it.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="known-formatters"><a class="header" href="#known-formatters">Known formatters</a></h1>
+<p>Here is a list of all the formatters we tested. Feel free to send a PR to add other ones!</p>
+<h2 id="python"><a class="header" href="#python">Python</a></h2>
+<h3 id="black"><a class="header" href="#black"><a href="https://github.com/psf/black">Black</a></a></h3>
+<pre><code>command = &quot;black&quot;
+includes = [&quot;*.py&quot;]
+</code></pre>
+<h2 id="elm"><a class="header" href="#elm">Elm</a></h2>
+<h3 id="elm-format"><a class="header" href="#elm-format"><a href="https://numtide.github.io/treefmt/formatters.html#elm">Elm-format</a></a></h3>
+<pre><code>command = &quot;elm-format&quot;
+options = [&quot;--yes&quot;]
+includes = [&quot;*.elm&quot;]
+</code></pre>
+<h2 id="golang"><a class="header" href="#golang">Golang</a></h2>
+<h3 id="gofmt"><a class="header" href="#gofmt"><a href="https://pkg.go.dev/cmd/gofmt">Gofmt</a></a></h3>
+<pre><code>command = &quot;gofmt&quot;
+options = [&quot;-w&quot;]
+includes = [&quot;*.go&quot;]
+</code></pre>
+<h2 id="haskell"><a class="header" href="#haskell">Haskell</a></h2>
+<h3 id="ormolu"><a class="header" href="#ormolu"><a href="https://github.com/tweag/ormolu">Ormolu</a></a></h3>
+<p>Make sure to use ormolu 0.1.4.0+ as older versions don't adhere to the spec.</p>
+<pre><code>command = &quot;ormolu&quot;
+options = [
+ &quot;--ghc-opt&quot;, &quot;-XBangPatterns&quot;,
+ &quot;--ghc-opt&quot;, &quot;-XPatternSynonyms&quot;,
+ &quot;--ghc-opt&quot;, &quot;-XTypeApplications&quot;,
+ &quot;--mode&quot;, &quot;inplace&quot;,
+ &quot;--check-idempotence&quot;,
+]
+includes = [&quot;*.hs&quot;]
+</code></pre>
+<h3 id="stylish-haskell"><a class="header" href="#stylish-haskell"><a href="https://github.com/jaspervdj/stylish-haskell">stylish-haskell</a></a></h3>
+<pre><code>command = &quot;stylish-haskell&quot;
+options = [ &quot;--inplace&quot; ]
+includes = [ &quot;*.hs&quot; ]
+</code></pre>
+<h2 id="nix"><a class="header" href="#nix">Nix</a></h2>
+<h3 id="nixpkgs-fmt"><a class="header" href="#nixpkgs-fmt"><a href="https://github.com/nix-community/nixpkgs-fmt">nixpkgs-fmt</a></a></h3>
+<pre><code>command = &quot;nixpkgs-fmt&quot;
+includes = [&quot;*.nix&quot;]
+</code></pre>
+<h2 id="rust"><a class="header" href="#rust">Rust</a></h2>
+<p>cargo fmt is not supported as it doesn't follow the spec. It doesn't allow to pass arbitrary files to be formatter, an ability which <code>treefmt</code> relies on. Use rustfmt instead (which is what cargo fmt uses under the hood).</p>
+<h3 id="rustfmt"><a class="header" href="#rustfmt"><a href="https://github.com/rust-lang/rustfmt">rustfmt</a></a></h3>
+<pre><code>command = &quot;rustfmt&quot;
+options = [&quot;--edition&quot;, &quot;2018&quot;]
+includes = [&quot;*.rs&quot;]
+</code></pre>
+<h2 id="ruby"><a class="header" href="#ruby">Ruby</a></h2>
+<h3 id="rufo"><a class="header" href="#rufo"><a href="https://github.com/ruby-formatter/rufo">rufo</a></a></h3>
+<p>Rufo is an opinionated ruby formatter. By default it exits with status 3 on file change so you have to pass the <code>-x</code> option.</p>
+<pre><code>command = &quot;rufo&quot;
+options = [&quot;-x&quot;]
+includes = [&quot;*.rb&quot;]
+</code></pre>
+<h2 id="shell"><a class="header" href="#shell">Shell</a></h2>
+<h3 id="shfmt"><a class="header" href="#shfmt"><a href="https://github.com/mvdan/sh">shfmt</a></a></h3>
+<pre><code>command = &quot;shfmt&quot;
+options = [
+ &quot;-i&quot;,
+ &quot;2&quot;,  # indent 2
+ &quot;-s&quot;,  # simplify the code
+ &quot;-w&quot;,  # write back to the file
+]
+includes = [&quot;*.sh&quot;]
+</code></pre>
+<h2 id="terraform"><a class="header" href="#terraform">Terraform</a></h2>
+<h3 id="terraform-1"><a class="header" href="#terraform-1"><a href="https://numtide.github.io/treefmt/formatters.html#terraform">terraform</a></a></h3>
+<p>Make sure to use terraform 1.3.0 or later versions, as earlier versions format only one file at a time. See the details <a href="https://github.com/hashicorp/terraform/pull/28191">here</a>.</p>
+<pre><code>command = &quot;terraform&quot;
+options = [&quot;fmt&quot;]
+includes = [&quot;*.tf&quot;]
+</code></pre>
+<h2 id="multi-language-formatters"><a class="header" href="#multi-language-formatters">Multi-language formatters</a></h2>
+<h3 id="clang-format"><a class="header" href="#clang-format"><a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a></a></h3>
+<p>A tool to format C/C++/Java/JavaScript/Objective-C/Protobuf/C# code.</p>
+<pre><code>command = &quot;clang-format&quot;
+options = [ &quot;-i&quot; ]
+includes = [ &quot;*.c&quot;, &quot;*.cpp&quot;, &quot;*.cc&quot;, &quot;*.h&quot;, &quot;*.hpp&quot; ]
+</code></pre>
+<p><strong>Note:</strong> This example focuses on C/C++ but can be modified to be used with other languages.</p>
+<h3 id="prettier"><a class="header" href="#prettier"><a href="https://prettier.io/">Prettier</a></a></h3>
+<p>An opinionated code formatter that supports many languages.</p>
+<pre><code>command = &quot;prettier&quot;
+options = [&quot;--write&quot;]
+includes = [
+ &quot;*.css&quot;,
+ &quot;*.html&quot;,
+ &quot;*.js&quot;,
+ &quot;*.json&quot;,
+ &quot;*.jsx&quot;,
+ &quot;*.md&quot;,
+ &quot;*.mdx&quot;,
+ &quot;*.scss&quot;,
+ &quot;*.ts&quot;,
+ &quot;*.yaml&quot;,
+]
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contribution-guidelines"><a class="header" href="#contribution-guidelines">Contribution guidelines</a></h1>
+<p>This file contains instructions that will help you make a contribution.</p>
+<h2 id="licensing"><a class="header" href="#licensing">Licensing</a></h2>
+<p>The treefmt binaries and this user guide are licensed under the <a href="https://numtide.github.io/treefmt/LICENSE.html">MIT license</a>.</p>
+<h2 id="before-you-contribute"><a class="header" href="#before-you-contribute">Before you contribute</a></h2>
+<p>Here you can take a look at the <a href="https://github.com/numtide/treefmt/issues">existing issues</a>. Feel free to contribute, but make sure you have a <a href="https://github.com/join">GitHub account</a> first :) .</p>
+<p>If you're new to open source, please read GitHub's guide on <a href="https://opensource.guide/how-to-contribute/">How to Contribute to Open Source</a>. It's a quick read, and it's a great way to introduce yourself to how things work behind the scenes in open-source projects.</p>
+<p>Before sending a pull request, make sure that you've read all the guidelines. If you don't understand something, please <a href="https://github.com/numtide/treefmt/issues/new">state your question clearly in an issue</a> or ask the community on the <a href="https://matrix.to/#/#treefmt:numtide.com">treefmt matrix server</a>.</p>
+<h2 id="creating-an-issue"><a class="header" href="#creating-an-issue">Creating an issue</a></h2>
+<p>If you need to create an issue, make sure to clearly describe it, including:</p>
+<ul>
+<li>The steps to reproduce it if it's a bug</li>
+<li>The version of treefmt used</li>
+<li>The database driver and version</li>
+<li>The database version</li>
+</ul>
+<p>The cache database is stored in a toml file the ~/.cache/treefmt directory.</p>
+<h2 id="making-changes"><a class="header" href="#making-changes">Making changes</a></h2>
+<p>If you want to introduce changes to the project, please follow these steps:</p>
+<ul>
+<li>Fork the repository on GitHub</li>
+<li>Create a branch on your fork. Don't commit directly to master</li>
+<li>Add the necessary tests for your changes</li>
+<li>Run treefmt in the source directory before you commit your changes</li>
+<li>Push your changes to the branch in your repository fork</li>
+<li>Submit a pull request to the original repository</li>
+</ul>
+<p>Make sure you based your commits on logical and atomic units!</p>
+<h2 id="examples-of-git-history"><a class="header" href="#examples-of-git-history">Examples of git history</a></h2>
+<p>Git history that we want to have:</p>
+<p>Git history that we are trying to avoid:</p>
+<details>
+<summary>Git history that we want to have</summary>
+<pre><code>
+*   e3ed88b (HEAD -&gt; contribution-guide, upstream/master, origin/master, origin/HEAD, master) Merge pull request #470 from zimbatm/fix_lru_cache
+
+|\
+
+| * 1ab7d9f Use rayon for multithreading command
+
+|/
+
+*   e9c5bb4 Merge pull request #468 from zimbatm/multithread
+
+|\
+
+| * de2d6cf Add lint property for Formatter struct
+
+| * cd2ed17 Fix impl on Formatter get_command() function
+
+|/
+
+*   028c344 Merge pull request #465 from rayon/0.15.0-release
+
+|\
+
+| * 7b619d6 0.15.0 release
+
+|/
+
+*   acdf7df Merge pull request #463 from zimbatm/support-multi-part-namespaces
+
+</code></pre>
+</details>
+<details>
+<summary>Git history that we are <b>trying</b> to avoid:</summary>
+<pre><code>
+*   4c8aca8 Merge pull request #120 from zimbatm/add-rayon
+
+|\
+
+| * fc2b449 use rayon for engine now
+
+| * 2304683 add rayon config
+
+| * 5285bd3 bump base image to F30
+
+* |   4d0fbe2 Merge pull request #114 from rizary/create_method_create_release
+
+|\ \
+
+| * | 36a9396 test changed
+
+| * | 22f681d method create release for github created
+
+* | |   2ef4ea1 Merge pull request #119 from rizary/config.rs
+
+|\ \ \
+
+| |/ /
+
+|/| |
+
+| * | 5f1b8f0 unused functions removed
+
+* | |   a93c361 Merge pull request #117 from zimbatm/add-getreleases-to-abstract
+
+|\ \ \
+
+| |/ /
+
+|/| |
+
+| * | 0a97236 add get_releses for Cargo
+
+| * | 55e4c57 add get_releases/get_release into engine.rs
+
+|/ /
+
+* |   badeddd Merge pull request #101 from zimbatm/extreme-cachin
+
+</code></pre>
+</details>
+<p>Additionally, it's always good to work on improving documentation and adding examples.</p>
+<p>Thank you for considering contributing to <code>treefmt</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
