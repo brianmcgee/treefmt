@@ -1,7 +1,7 @@
 { system ? builtins.currentSystem
-, inputs ? import ./flake.lock.nix { }
-, overlays ? [ (import inputs.rust-overlay) ]
-, nixpkgs ? import inputs.nixpkgs {
+, sources ? import ./nix/sources.nix
+, overlays ? [ (import sources.rust-overlay) ]
+, nixpkgs ? import sources.nixpkgs {
     inherit system overlays;
     # Makes the config pure as well. See <nixpkgs>/top-level/impure.nix:
     config = { };
